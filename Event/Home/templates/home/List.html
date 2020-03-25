@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>List</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+</head>
+
+<body>
+    <h2>{{name}}</h2>
+    {% if name == "Chris Bui" %}
+    <h3>You are the admin</h3>
+    {% endif %}
+
+    <ul>
+        {% for fruit in fruits%}
+        <li>{{fruit}}</li>
+        {%endfor%}
+    </ul>
+</body>
+
+</html>
