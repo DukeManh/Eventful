@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    {% load static %}
-    {% block title %}
-    {% endblock %}
-    <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+  <head>
+    {% load static %} {% block title %} {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}" />
+  </head>
 
-<body class="bodyWrap">
-    <nav>
-        <div class="navContainer">
-            <div class="navLogo">
-                <h1>Eventful</h1>
-            </div>
-            <div class="navList">
-                <ul>
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Host an Event</a></li>
-                    <li><a href="">My Events</a></li>
-                    <li><a href="">My account</a></li>
-                </ul>
-            </div>
+  <body class="">
+    <nav id="navDuc" class="navbar navbar-expand-lg navbar-light bg-light" >
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="#" class="navbar-brand" style="color: #fc7b03;">Eventful</a>
+        <div class="collapse navbar-collapse bg-light" id="collapsibleNavbar">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item"><a class="nav-link" href="{% url 'homepage' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="">Host an Event</a></li>
+          <li class="nav-item"><a class="nav-link" href="">My Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="">My account</a></li>
+        </ul>
         </div>
+      </div>
     </nav>
-    {% block content%}
-    {% endblock %}
-</body>
-
+    {% block content%} {% endblock %}
+  </body>
 </html>

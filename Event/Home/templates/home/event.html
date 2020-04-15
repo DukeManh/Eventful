@@ -1,0 +1,16 @@
+{% extends 'home/base.html' %} {%block content %}
+<div class="container">
+  {% if event %}
+  <p>What: {{event.title}}</p>
+  <p>Where: {{event.venue}}</p>
+  <p>When: {{event.date}}</p>
+  {% if event.fee == 0.0 %}
+  <p>How much: FREE</p>
+  {% else %}
+  <p>How much: ${{event.fee}}</p>
+  {%endif%} {% else %}
+  <h4>Event does not exist</h4>
+  {% endif %}
+</div>
+
+{% endblock%}

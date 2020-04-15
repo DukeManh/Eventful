@@ -1,23 +1,35 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from Home.models import *
 
 # Create your views here.
 
 
 def index(request):
-    return HttpResponse("TEsting")
+    return HttpResponse("Under development sorry")
 
 
-def greet(request, name):
+def greet(request):
     return render(request, "home/List.html", {
         "fruits": ["kiwi", "jackfruit", "mango"],
-        "name": name
     })
 
 
 def homepage(request):
-    return render(request, "home/index.html")
+    events = Event.objects.all()
+    context = {
+        'admin': 'Chris',
+        'events': events,
+    }
+    return render(request, "home/index.html", context=context)
 
 
-def test(request):
-    return render(request, "home/base.html")
+def event(request, id):
+    try:
+        event = Event.objects.get(pk=id)
+    except Event.DoesNotExist:
+        event = None
+    context = {
+        'event': event,
+    }
+    return render(request, "home/event.html", context=context)

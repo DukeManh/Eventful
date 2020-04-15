@@ -6,7 +6,6 @@ from django.urls import reverse
 
 
 def index(request):
-    print("shit")
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
     return HttpResponse("dafs")
@@ -22,7 +21,6 @@ def signup_view(request):
 
 def login_view(request):
     if request.method == "POST":
-        print("shit")
         username = request.POST["Username"]
         password = request.POST["Password"]
         user = authenticate(request, username=username, password=password)
