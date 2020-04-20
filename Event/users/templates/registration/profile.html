@@ -1,0 +1,10 @@
+{% extends 'registration/layout.html' %}
+
+
+{% block content %}
+{% if user.is_authenticated%}
+<p>Hello {{ user.get_username}}</p>
+{% else %}
+<p>You have not logged in</p>
+{%endif%}
+{% endblock  %}

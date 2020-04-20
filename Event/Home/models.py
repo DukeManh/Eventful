@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -9,7 +10,7 @@ class Venue(models.Model):
     city = models.CharField(max_length=20)
 
     def __str__(self):
-        return f'{self.title}: {self.address}, {self.city}'
+        return f'{self.title} - {self.address}, {self.city}'
 
 
 class Event(models.Model):
@@ -20,9 +21,14 @@ class Event(models.Model):
         auto_now=False, auto_now_add=False, verbose_name='Start Date')
     time = models.TimeField(verbose_name='Start time', auto_now=False)
     fee = models.DecimalField(max_digits=5, decimal_places=2)
+    imagePath = models.CharField(
+        max_length=30, null=True, default="Image/test.png")
 
     def __str__(self):
         return f'{self.title} at {self.venue}'
+
+    def get_absolute_url(self):
+        return reverse('event-detail', args=[str(self.id)])
 
 
 class Booking(models.Model):

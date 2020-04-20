@@ -1,0 +1,39 @@
+{% extends 'home/base.html' %} {% block content %}
+<div class="container-fluid" id="backgroundImage">
+  <img src="static/Image/background.jpg" alt="">
+  <h1>{{ admin }}</h1>
+  <div class="container" id="header-content">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.
+    <p>
+      <h2>Events:</h2>
+    </p>
+  </div>
+</div>
+<div class="container">
+  <h5> Showing {{event_list.count}} {% if event_list.count < 1 %}result {%else%} results{%endif%}</h5>
+  <p></p>
+  <ul>
+    {%for event in event_list%}
+    <li class="event-box">
+      <div class="card w-100 mx-auto my-2">
+        <div class="card-body shadow-sm">
+          <div class="row">
+            <div class="col-sm-4">
+              <img src="/static/{{event.imagePath}}" alt="" width="100%" height="100%">
+            </div>
+            <div class="col-sm-8" ">
+              <a href=" {{ event.get_absolute_url }}" class="card-text">{{event}}</a><br>
+              <span style="color: darksalmon;">{{event.date}}, {{event.time}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    {%endfor%}
+  </ul>
+</div>
+{% endblock %}

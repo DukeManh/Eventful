@@ -1,4 +1,7 @@
 {% extends 'home/base.html' %} {%block content %}
+<div class="container-fluid" id="backgroundDetail">
+  <img src="/static/{{event.imagePath}}" alt="alter" width="100%" height="100%">
+</div>
 <div class="container">
   {% if event %}
   <p>What: {{event.title}}</p>
