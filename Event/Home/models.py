@@ -16,7 +16,8 @@ class Venue(models.Model):
 class Event(models.Model):
     title = models.CharField(max_length=100)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
-    organizer = models.ManyToManyField(User, help_text='add organizer')
+    organizer = models.ManyToManyField(
+        User, help_text='add organizer')
     date = models.DateField(
         auto_now=False, auto_now_add=False, verbose_name='Start Date')
     time = models.TimeField(verbose_name='Start time', auto_now=False)
@@ -29,6 +30,9 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('event-detail', args=[str(self.id)])
+
+    class Meta:
+        ordering = ['date', 'time']
 
 
 class Booking(models.Model):

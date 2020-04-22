@@ -1,28 +1,4 @@
-.event-box
-{
-    margin: 0 auto;
-    list-style-type: none;
-}
-
-@media only screen and (max-width: 960px) {
-    .container {
-        max-width: 100%;
-    }
-  }
-@media only screen and (max-width: 576px) {
-    .card {
-        max-width: 80%;
-    }
-}
-.card:hover{
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-body{
-    background-color: snow;
-}
-#backgroundImage{
+/* #backgroundImage{
     padding: 0;
     position: relative;
     height: 220px;
@@ -57,4 +33,39 @@ body{
     z-index: -99;
     filter: blur(8px);
     -webkit-filter: blur(8px);
+} */
+
+
+body{
+    background: #007bff;
+    background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+
+.card-login{
+    border: 0;
+    border-radius: 1rem;
+}
+
+.card-login .card-title{
+    margin-bottom: 1rem;
+    font-weight: 300;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.card-login .card-body{
+    padding: 2rem;
+}
+
+.form-group input {
+    border-radius: 1.5rem;
+    height: auto;
+}
+
+.form-group{
+    margin-bottom: 0.7rem;
+}
+
+form .btn{
+    border-radius: 1.5rem;
 }
