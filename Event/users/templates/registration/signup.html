@@ -1,0 +1,52 @@
+{% extends 'registration/layout.html' %}
+
+{% block link %}
+{% load static %}
+<link rel="stylesheet" href="{%static 'User/login.css'%}">
+{% endblock link %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card my-3 card-login shadow-sm ">
+                <div class="card-body">
+                    <form method="POST" action="" id="signup">
+                        {% csrf_token %}
+                        <h5 class="card-title text-center">Signup</h5>
+                        <div class="form-group">
+                            <label for="mail">Email</label>
+                            <input type="email" class="form-control" name="mail" id="mail"
+                                placeholder="JohnSmith@yahoo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" placeholder="JohnSmithy" class="form-control" name="username"
+                                id="username">
+                            <small id="nametext" class="form-text text-muted">Username must be between 8-16 characters
+                                long</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass1">Password</label>
+                            <input type="password" class="form-control" name="pass1" id="pass1"
+                                placeholder="Enter password">
+                            <small id="pass1text" class="form-text text-muted">Password must contain at least one
+                                digit, 1 upper-case letter</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm">Confirm Password</label>
+                            <input type="password" class="form-control" name="confirm" id="pass2"
+                                placeholder="Re-enter password">
+                            <small id="pass2text" class="form-text text-muted">Passwords must match</small>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-lg text-uppercase" type="submit">Signup</button>
+                        <p class="text-right"><a href="{%url 'login' %}">Don't have an account? Signup now!</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'Home/validate.js' %}"></script>
+{% endblock content %}

@@ -1,28 +1,19 @@
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from rest_framework import generics
+from .serializers import EventSerializer
 
 from Home.models import *
 # Create your views here.
 
 
-def index(request):
-    return HttpResponse("Under development sorry")
-
-
-def greet(request):
-    return render(request, "home/List.html", {
-        "fruits": ["kiwi", "jackfruit", "mango"],
-    })
-
-
 def homepage(request):
     events = Event.objects.all()
     context = {
-        'admin': 'Chris',
         'events': events,
     }
     return HttpResponseRedirect(reverse('events'))
@@ -62,7 +53,44 @@ class EventListView(ListView):
 class EventDetailView(DetailView):
     model = Event
     template_name = 'home/eventDetailView.html'
+    months = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September',
+              10: 'October', 11: 'November', 12: 'December'}
 
-    def event_detail_view(request, pk):
-        event = get_object_or_404(Event, pk=pk)
-        return render(request, "home/eventDetailView.html", context={'event': event})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['month'] = self.months[int(context['event'].date.month)]
+        return context
+
+    def event_detail_view(request, slug):
+        event = get_object_or_404(Event, slug=slug)
+        return render(request, "home/eventDetailView.html")
+
+
+@login_required
+def booking(request):
+    return HttpResponse("we're working on it")
+
+
+def interested(request):
+    user = request.user
+    id = request.GET['id']
+    event = Event.objects.get(pk=id)
+    if not user in event.interested.all():
+        event.interested.add(user)
+        data = {
+            'success': True,
+            'interested': event.interested.count(),
+        }
+        return JsonResponse(data)
+    else:
+        event.interested.remove(user)
+        data = {
+            'success': False,
+            'interested': event.interested.count(),
+        }
+        return JsonResponse(data)
+
+
+class EventListCreate(generics.ListCreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer

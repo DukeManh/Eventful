@@ -3,6 +3,9 @@
     margin: 0 auto;
     list-style-type: none;
 }
+.event-box a:hover{
+    text-decoration: none;
+}
 
 @media only screen and (max-width: 960px) {
     .container {
@@ -21,6 +24,7 @@
 
 body{
     background-color: snow;
+    height: 100%;
 }
 #backgroundImage{
     padding: 0;
@@ -57,4 +61,7 @@ body{
     z-index: -99;
     filter: blur(8px);
     -webkit-filter: blur(8px);
+}
+.inline-list a:hover{
+    text-decoration: none; 
 }

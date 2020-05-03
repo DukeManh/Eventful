@@ -1,19 +1,176 @@
-{% extends 'home/base.html' %} {%block content %}
-<div class="container-fluid" id="backgroundDetail">
-  <img src="/static/{{event.imagePath}}" alt="alter" width="100%" height="100%">
+{% extends 'home/base.html' %}
+{% block link %}
+{% load static %}
+<link rel=" stylesheet" href="{% static 'Home/detailview.css' %}">
+<script src="{% static 'home/detailview.js' %}"></script>
+{% endblock link %}
+{%block content %}
+<div id="wrap">
+  <div class="container-fluid" id="headerImage">
+    <div id="imageContainer" style="background-image: url('/static/{{event.imagePath}}');"></div>
+  </div>
+  <div class="container-lg mb-5" id="event-card">
+    <div class="row mb-2">
+      <div class="col-md-7 event-col" id="event-col1" style="background-image: url('/static/{{event.imagePath}}');">
+      </div>
+      <div class="col-md-5 event-col px-5 py-3" id="event-col2">
+        {% if event %}
+        <span id="event-id" style="display: none;">{{event.id }}</span>
+        <div class="mb-3">
+          <span class="text-muted text-uppercase">{{month}}</span>
+          <span class="text-muted">{{event.date.day}}</span>
+        </div>
+        <h4 class="desc">{{event.title}}</h4><small id="count" class="text-muted">
+          {% if event.interested.count %}
+          {{event.interested.count}} people interested
+          {% endif %}
+        </small>
+        <div class="mb-2 desc">{{event.venue}}</div>
+        <div class="mb-2 desc">By
+          {%for org in event.organizer.all%}
+          <span>{{org}}</span>
+          {%endfor%}
+        </div>
+        {% if event.fee == 0.0 %}
+        <div class="mb-2">Free</div>
+        {% else %}
+        <div class="mb-2">${{event.fee}}</div>
+        {%endif%}
+        <div class="container">
+          <div class="row">
+            <button id="book" class="btn btn-success col-md-5 col-sm-3 mx-2" data-toggle="modal"
+              data-target="#ticket-modal">
+              {%if event.fee > 0 %}
+              Tickets {%else%}
+              Register {%endif%}
+            </button>
+            {%if user.is_authenticated%}
+            <span id="clicked"
+              style="display:none;">{%if user in event.interested.all%}true{%else%}false{%endif%}</span>
+            <button id="imin" class="btn btn-primary col-md-5 col-sm-3 mx-2">
+              Interested
+              <svg id="check" style="display:none;" class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16"
+                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M13.854 3.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3.5-3.5a.5.5 0 11.708-.708L6.5 10.293l6.646-6.647a.5.5 0 01.708 0z"
+                  clip-rule="evenodd" />
+              </svg>
+            </button>
+            {%else%}
+            <a href="{%url 'login' %}?next={{request.path}}"
+              class="btn btn-primary col-md-5 col-sm-3 mx-2">Interested</a>
+            {%endif%}
+          </div>
+        </div>
+        <div class="modal fade" id="ticket-modal">
+          <div class="modal-dialog">
+            <div class="modal-content ">
+              <div class="modal-header justify-content-center" style="background-color: snow;">
+                <h2 style="text-align: center; font-weight: 600; font-size: 18px;">{{event.title}}</h2>
+              </div>
+              <div class="modal-body px-3" style="height: 45vh;">
+                <p style="font-style: italic;">Book tickets</p>
+                <div class="ticket-box ">
+                  <div class="row">
+                    <div class="ticket-box-primary col-9">
+                      <h4>{{event.title}}</h4>
+                      <div class="pricing">
+                        {% if event.fee == 0.0 %}Free
+                        {% else %}
+                        ${{event.fee}}
+                        {%endif%}
+                      </div>
+                    </div>
+                    <div class="ticket-box-secondary col-3">
+                      <select name="#tickets px-3" id="numtickets">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer" style="background-color: snow;">
+                <button class="btn btn-primary">
+                  {%if event.fee > 0 %}
+                  Book {%else%}
+                  Register {%endif%}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <h4>Event does not exist</h4>
+        {% endif %}
+      </div>
+    </div>
+    <hr />
+    <div class="container-md">
+      <h4>Lorem ipsum</h4>
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+        tortor
+        quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        Aenean
+        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
+        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget
+        tincidunt
+        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
+        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate
+        magna
+        eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      </p>
+      <h4>Eros ipsum rutrum orci</h4>
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+        tortor
+        quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        Aenean
+        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
+        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget
+        tincidunt
+        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
+        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate
+        magna
+        eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      </p>
+      <h4>Tempor sit amet, ante</h4>
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+        tortor
+        quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        Aenean
+        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
+        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget
+        tincidunt
+        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
+        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate
+        magna
+        eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      </p>
+      <h4>Ultricies eget</h4>
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+        tortor
+        quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper.
+        Aenean
+        ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra.
+        Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget
+        tincidunt
+        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar
+        facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate
+        magna
+        eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      </p>
+    </div>
+  </div>
 </div>
-<div class="container">
-  {% if event %}
-  <p>What: {{event.title}}</p>
-  <p>Where: {{event.venue}}</p>
-  <p>When: {{event.date}}</p>
-  {% if event.fee == 0.0 %}
-  <p>How much: FREE</p>
-  {% else %}
-  <p>How much: ${{event.fee}}</p>
-  {%endif%} {% else %}
-  <h4>Event does not exist</h4>
-  {% endif %}
-</div>
-
 {% endblock%}
+{% block javascript %}
+{% load static %}
+{% endblock javascript %}
