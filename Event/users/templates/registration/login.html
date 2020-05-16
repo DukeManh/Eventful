@@ -32,7 +32,9 @@
                             style="margin-bottom: 1.5rem;">Login</button>
                         <input type="hidden" name="next" value="{{ next }}" />
                         <p class="text-right"><a href="{% url 'password_reset' %}">Forgot password?</a><br>
-                            <a href="{%url 'signup'%}">Don't have an account? Signup now!</a></p>
+                            <a href="{%url 'signup'%}">Don't have an account? Signup now!</a><br>
+                            <small class="text-muted"> Demo account: "Ron" - "demoaccount"</small>
+                        </p>
                     </form>
                 </div>
             </div>

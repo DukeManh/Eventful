@@ -57,7 +57,7 @@
         height: auto;
     }
     .desc{
-        font-size: medium;
+        font-size: 15px;
     } 
 }
 
@@ -73,10 +73,10 @@
 
 .ticket-box-secondary select{
     width: 100%;
-    padding: 5px;
+    padding: 1rem;
 }
 
-#numtickets{
+.select-ticket-num{
     font-size: 14px;
     line-height: 22px;
     width: 100%;

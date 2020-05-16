@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/users/login/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Home/static/Image')
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (

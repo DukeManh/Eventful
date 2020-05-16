@@ -1,0 +1,158 @@
+{%extends  'home/base.html' %}
+{%block link%}
+{% load static %}
+<link rel="stylesheet" href="{% static 'home/hosting.css'%}">
+<script src="{% static 'home/hosting.js' %}"></script>
+{%endblock%}
+{% block nav %}
+{% endblock nav %}
+
+{% block content %}
+<div class="wrapper" style="position: relative;">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <button type="button" id="sidebarCollapse" class="btn btn-info"
+            style="position: absolute; top: 0; right: -42px; z-index: 999;">
+            <i class="fas fa-align-left"></i>
+            <span>
+                <svg id="open" class="bi bi-chevron-double-right inout " width="1em" height="1em" viewBox="0 0 16 16"
+                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M3.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L9.293 8 3.646 2.354a.5.5 0 010-.708z"
+                        clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M7.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L13.293 8 7.646 2.354a.5.5 0 010-.708z"
+                        clip-rule="evenodd" />
+                </svg>
+                <svg id="close" class="bi bi-chevron-double-left inout active" width="1em" height="1em"
+                    viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M8.354 1.646a.5.5 0 010 .708L2.707 8l5.647 5.646a.5.5 0 01-.708.708l-6-6a.5.5 0 010-.708l6-6a.5.5 0 01.708 0z"
+                        clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                        d="M12.354 1.646a.5.5 0 010 .708L6.707 8l5.647 5.646a.5.5 0 01-.708.708l-6-6a.5.5 0 010-.708l6-6a.5.5 0 01.708 0z"
+                        clip-rule="evenodd" />
+                </svg>
+            </span>
+        </button>
+        <div id="sidebar-wrap">
+            <div class="sidebar-header text-right">
+                <h3>Create my event</h3>
+            </div>
+            <h5>Select section</h5>
+            <ul class="list-unstyled components" style="display: flex; align-items: stretch; flex-direction: column;">
+                <li id="basic-page" class="switch " data-target="#basic"> Basic Info </li>
+                <li id="ticket-page" class="switch" data-target="#ticket"> Ticket Option</a> </li>
+                <li id="term-page" class="switch" data-target="#term"> Terms And Agreements </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="content" class="container-fluid">
+        <div class="container-md mx-auto" style="padding: 20px;padding-top: 40px; max-width: 768px;" id="content-box">
+            <form method="POST" action="{%url 'booking' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="basic" class="form-page ">
+                    <h3 class="card-title">Basic INFO</h3>
+                    <p>Name your event and tell event-goers why they should come. Add details that highlight what makes
+                        it unique.
+                    </p>
+                    <div class="form-group">
+                        <label for="title">Event Name</label>
+                        <input type="text" class="form-control" maxlength="50" placeholder="Event Title"
+                            name="event_name" id="event-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="organizer">Organizer</label>
+                        <input type="text" class="form-control" maxlength="50"
+                            placeholder="Who is organizing this event">
+                    </div>
+                    <hr>
+                    <h3 class="card-title">Location</h3>
+                    <p>Choose from a list off available locations, add location if neeeded</p>
+                    <div class="form-group">
+                        <select name="venue" id="venue" class="custom-select">
+                            {%for venue in  venues%}
+                            <option value="{{venue.id}}">{{venue}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    <hr>
+                    <h3 class="card-title">Time</h3>
+                    <div class="form-group">
+                        <label for="startdate">Start Date</label>
+                        <input type="date" name="startdate" value="{{today}}" min="{{today}}" max="{{max_date}}"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="starttime">Start Time</label>
+                        <input type="time" name="starttime" id="starttime" value="12:00" min="00:00" max="24:00"
+                            class="form-control">
+                    </div>
+                    <h3 class="card-title">Media</h3>
+                    <p>Upload an image that will be displayed on your event's page</p>
+                    <div class="form-group">
+                        <label for="imageFile">Upload Image</label>
+                        <input type="file" name="imageFile" id="imageFile" class="form-control" required>
+                    </div>
+                </div>
+                <div id="ticket" class="form-group form-page">
+                    <div id="ticket-options">
+                        <h3 class="card-title">General</h3>
+                        <button class="btn btn-info">Free</button>
+                        <button class="btn btn-info">Paid</button>
+                        <div class="form-group">
+                            <label for="baseFee">General Admission</label>
+                            <input type="number" step="0.01" name="baseFee" id="baseFee" class="form-control"
+                                placeholder="$30" required>
+                        </div>
+                    </div>
+                    <input type="hidden" name="additionalTickets" id="additionalTickets" value="0">
+                    <div class="form-group">
+                        <input type="button" value="Add more +" class="btn btn-primary" id="add">
+                    </div>
+                </div>
+                <div id="term" class="form-page" style="width: 100%;">
+                    <h3 class="text-center">Terms And Agreements</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore
+                        et dolore magna aliqua. Senectus et netus et malesuada fames. Vulputate sapien nec sagittis
+                        aliquam
+                        malesuada bibendum arcu vitae. Blandit massa enim nec dui nunc mattis enim ut tellus. Est
+                        ultricies
+                        velit
+                        eget egestas purus. Integer vitae justo eget magna. Tellus id interdum velit laoreet id donec
+                        ultrices tincidunt arcu. Morbi leo urna molestie at elementum eu facilisis sed odio. Venenatis
+                        tellus in metus vulputate eu scelerisque felis imperdiet. Mi ipsum faucibus vitae aliquet.
+                    </p>
+                    <p>
+                        Magnis dis parturient montes nascetur. Turpis massa tincidunt dui ut ornare lectus sit amet.
+                        Dolor
+                        morbi non arcu risus quis varius. Montes nascetur ridiculus mus mauris. Orci dapibus ultrices in
+                        iaculis nunc. Fermentum posuere urna nec tincidunt praesent semper. Tempus urna et pharetra
+                        pharetra
+                        massa massa ultricies. Et malesuada fames ac turpis egestas. Amet commodo nulla facilisi nullam
+                        vehicula. Massa eget egestas purus viverra. Tincidunt augue interdum velit euismod in
+                        pellentesque
+                        massa placerat duis.
+                    </p>
+                    <p>
+                        Magnis dis parturient montes nascetur. Turpis massa tincidunt dui ut ornare lectus sit amet.
+                        Dolor
+                        morbi non arcu risus quis varius. Montes nascetur ridiculus mus mauris. Orci dapibus ultrices in
+                        iaculis nunc. Fermentum posuere urna nec tincidunt praesent semper. Tempus urna et pharetra
+                        pharetra
+                    </p>
+                    <div class="ml-auto" style="width: 20%;">
+                        <input type="checkbox" checked name="agree" id="">
+                        <label for="agree">I Agree</label>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success" type="submit" id="submit">Create Event</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -18,16 +18,21 @@
 <body>
   <nav id="navDuc" class="navbar navbar-expand-md navbar-light sticky-top "
     style="border-bottom: 1px #dbdbdb solid; background-color: ghostwhite; ">
+
+    {% block nav %}
+
+    {% endblock nav %}
+
     <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#collapsibleNavbar"
       aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a href="{% url 'home' %}" class="navbar-brand" style="color: #fc7b03;">Eventful</a>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto mr-3">
         <li class="nav-item"><a class="nav-link" href="{%url 'home'%}">Home</a></li>
         <li class="nav-item">
-          <a class="nav-link" href="{%url 'booking'%}">Host an Event</a>
+          <a class="nav-link" href="{%url 'booking'%}">Host My Event</a>
         </li>
         <li class="nav-item"><a class="nav-link" href="">My Events</a></li>
         <li class="nav-item dropdown">

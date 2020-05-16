@@ -14,20 +14,31 @@ class Venue(models.Model):
         return f'{self.title} - {self.address}, {self.city}'
 
 
+class TicketOption(models.Model):
+    name = models.CharField(max_length=20)
+    description = models.CharField(max_length=50, null=True, blank=True)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+
+    class Meta:
+        ordering = ['price']
+
+
 class Event(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
     slug = models.SlugField(unique=True, null=True)
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     organizer = models.ManyToManyField(
-        User, help_text='add organizer', related_name='organizer')
+        User, help_text='add organizer', related_name='organizer', blank=True, null=True)
     date = models.DateField(
         auto_now=False, auto_now_add=False, verbose_name='Start Date')
     time = models.TimeField(verbose_name='Start time', auto_now=False)
-    fee = models.DecimalField(max_digits=5, decimal_places=2)
+    baseFee = models.DecimalField(max_digits=5, decimal_places=2)
     imagePath = models.CharField(
         max_length=30, null=True, default="Image/test.png")
     interested = models.ManyToManyField(
         User, help_text='who is interested', related_name='interested', blank=True)
+    ticketOptions = models.ManyToManyField(
+        TicketOption, related_name="options")
 
     def __str__(self):
         return f'{self.title} at {self.venue}'

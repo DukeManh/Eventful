@@ -20,7 +20,8 @@
           <span class="text-muted text-uppercase">{{month}}</span>
           <span class="text-muted">{{event.date.day}}</span>
         </div>
-        <h4 class="desc">{{event.title}}</h4><small id="count" class="text-muted">
+        <h4 class="desc" style="font-weight: 400; font-size:20px;">{{event.title}}</h4><small id="count"
+          class="text-muted">
           {% if event.interested.count %}
           {{event.interested.count}} people interested
           {% endif %}
@@ -31,22 +32,26 @@
           <span>{{org}}</span>
           {%endfor%}
         </div>
-        {% if event.fee == 0.0 %}
+        {%if event.ticketOptions.count == 0%}
+        {% if event.baseFee == 0.0 %}
         <div class="mb-2">Free</div>
         {% else %}
-        <div class="mb-2">${{event.fee}}</div>
+        <div class="mb-2">${{event.baseFee}}</div>
+        {%endif%}
+        {%else%}
+        <div class="mb-2">${{minPrice}} - ${{maxPrice}}</div>
         {%endif%}
         <div class="container">
           <div class="row">
             <button id="book" class="btn btn-success col-md-5 col-sm-3 mx-2" data-toggle="modal"
               data-target="#ticket-modal">
-              {%if event.fee > 0 %}
+              {%if event.baseFee > 0 %}
               Tickets {%else%}
               Register {%endif%}
             </button>
             {%if user.is_authenticated%}
-            <span id="clicked"
-              style="display:none;">{%if user in event.interested.all%}true{%else%}false{%endif%}</span>
+            <input id="clicked" readonly style="display: none;"
+              value="{%if user in event.interested.all%}true{%else%}false{%endif%}"></input>
             <button id="imin" class="btn btn-primary col-md-5 col-sm-3 mx-2">
               Interested
               <svg id="check" style="display:none;" class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16"
@@ -57,32 +62,81 @@
               </svg>
             </button>
             {%else%}
-            <a href="{%url 'login' %}?next={{request.path}}"
-              class="btn btn-primary col-md-5 col-sm-3 mx-2">Interested</a>
+            <a href="{%url 'login' %}?next={{request.path}}" class="btn btn-primary col-md-5 col-sm-3">Interested</a>
             {%endif%}
           </div>
         </div>
         <div class="modal fade" id="ticket-modal">
           <div class="modal-dialog">
             <div class="modal-content ">
-              <div class="modal-header justify-content-center" style="background-color: snow;">
-                <h2 style="text-align: center; font-weight: 600; font-size: 18px;">{{event.title}}</h2>
+              <div class="modal-header" style="background-color: snow;">
+                <h2 class="col-12" style="font-weight: 600; font-size: 18px;">{{event.title}}</h2>
               </div>
-              <div class="modal-body px-3" style="height: 45vh;">
+              <div class="modal-body px-3" style="min-height: 45vh;">
                 <p style="font-style: italic;">Book tickets</p>
-                <div class="ticket-box ">
+                <div class="ticket-box">
                   <div class="row">
                     <div class="ticket-box-primary col-9">
-                      <h4>{{event.title}}</h4>
+                      <h4 class="mb-0;" style="font-weight: 500; font-size: 16px;">General Addmission</h4>
                       <div class="pricing">
-                        {% if event.fee == 0.0 %}Free
+                        {% if event.baseFee == 0.0 %}
+                        <span id="general">Free</span>
                         {% else %}
-                        ${{event.fee}}
+                        $<span>{{event.baseFee}}</span> x <span id="quantity">1</span> = $<span
+                          id="general">{{event.baseFee}}</span>
                         {%endif%}
                       </div>
                     </div>
                     <div class="ticket-box-secondary col-3">
-                      <select name="#tickets px-3" id="numtickets">
+                      <select class="custom-select select-ticket-num" data-option="0" data-quantity="#quantity"
+                        data-target="#general">
+                        {% if event.baseFee == 0%}
+                        <option value="0">0</option>
+                        <option selected value="1">1</option>
+                        {%else%}
+                        <option value="0">0</option>
+                        <option selected value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        {%endif%}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                {%for option in event.ticketOptions.all%}
+                <div class="ticket-box">
+                  <div class="row my-3">
+                    <div class="ticket-box-primary col-9">
+                      <h4 class="mb-0" style="font-weight: 500; font-size: 16px;">{{option.name}}</h4>
+                      {%if option.description%}
+                      <small>{{option.description}}</small>
+                      {%endif%}
+                      <div class="pricing">
+                        {% if option.price == 0.0 %}
+                        <span id="type{{option.id}}">
+                          Free
+                        </span>
+                        {% else %}
+                        $<span>{{option.price}}</span> x <span id="quantity{{option.id}}">0</span> = $<span
+                          id="type{{option.id}}">0.00</span>
+                        {%endif%}
+                      </div>
+                    </div>
+                    <div class="ticket-box-secondary col-3">
+                      <select class="custom-select select-ticket-num" data-option="{{option.id}}"
+                        data-quantity="#quantity{{option.id}}" data-target="#type{{option.id}}" name="#tickets p-3">
+                        {% if option.price == 0%}
+                        <option selected value="0">0</option>
+                        <option value="1">1</option>
+                        {%else%}
+                        <option selected value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -93,16 +147,22 @@
                         <option value="8">8</option>
                         <option value="9">9</option>
                         <option value="10">10</option>
+                        {%endif%}
                       </select>
                     </div>
                   </div>
                 </div>
+                {%endfor%}
               </div>
               <div class="modal-footer" style="background-color: snow;">
-                <button class="btn btn-primary">
-                  {%if event.fee > 0 %}
-                  Book {%else%}
-                  Register {%endif%}
+                <div>
+                  $<span id="subtotal">{{event.baseFee}}</span>
+                </div>
+                <button class="btn btn-primary" id="checkout">
+                  {%if event.baseFee > 0 %}
+                  Checkout {%else%}
+                  Register
+                  {%endif%}
                 </button>
               </div>
             </div>
