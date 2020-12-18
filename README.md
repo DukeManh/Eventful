@@ -1,6 +1,6 @@
 # Eventful
 
-'Eventful' is a event management and ticket website implemented from scratch using Django framwork and bootstrap.
+'Eventful' is a event and ticket management website implemented with Django framwork and bootstrap.
 Eventful allows users to:
   * Browse and search for events
   * Create Event and charge for different ticket options
